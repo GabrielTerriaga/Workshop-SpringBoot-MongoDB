@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.gabrielterriaga.workshopmongo.domain.Post;
 import com.gabrielterriaga.workshopmongo.domain.User;
 import com.gabrielterriaga.workshopmongo.dto.UserDTO;
 import com.gabrielterriaga.workshopmongo.services.UserService;
@@ -63,13 +64,22 @@ public class UserResource {
 	}
 	
 	//ENDPOINT PUT
-		@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-		public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ //Requisitando o body da classe DTO que esta fazendo toda o tipo de transferencia para o DB, um parametro do tipo Id
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ //Requisitando o body da classe DTO que esta fazendo toda o tipo de transferencia para o DB, um parametro do tipo Id
 		
-			User obj = service.fromDTO(objDto);
-			obj.setId(id);//id vindo por parametro atraves do endopoint do Spring
-			obj = service.update(obj); //inserir no DB
+		User obj = service.fromDTO(objDto);
+		obj.setId(id);//id vindo por parametro atraves do endopoint do Spring
+		obj = service.update(obj); //inserir no DB
 		
-			return ResponseEntity.noContent().build(); //se retornar vazio apresenta um ERROR 404
-		}
+		return ResponseEntity.noContent().build(); //se retornar vazio apresenta um ERROR 404
+	}
+		
+	//ENDPOINT RETORNAR LISTA DE POSTS
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id){ //para dizer que esse id precisa ser igual o id recebido na url
+		
+		User obj = service.findById(id);
+		
+		return ResponseEntity.ok().body(obj.getPosts()); //obj para comunicar com banco atraves do padrao DTO
+	}
 }

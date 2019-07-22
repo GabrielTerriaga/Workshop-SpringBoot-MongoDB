@@ -19,9 +19,7 @@ public class User implements Serializable{
 	
 	@DBRef(lazy = true) //para a hora que instanciar os usuarios não seja instanciado os post junto
 	private List<Post> posts = new ArrayList<>();
-	
-	//Associacao
-	
+
 	public User() {
 	}
 
