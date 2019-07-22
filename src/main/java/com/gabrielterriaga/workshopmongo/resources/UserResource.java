@@ -24,6 +24,7 @@ public class UserResource {
 	@Autowired //instanciar objeto, injecao de dependencia auto do Spring
 	private UserService service;
 	
+	//ENDPOINT FIND ALL
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<UserDTO>> findAll(){	
 		
@@ -32,6 +33,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	//ENDPOINT FIND BY ID
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDTO> findId(@PathVariable String id){ //para dizer que esse id precisa ser igual o id recebido na url
 	
@@ -40,8 +42,18 @@ public class UserResource {
 		return ResponseEntity.ok().body(new UserDTO(obj)); //obj para comunicar com banco atraves do padrao DTO
 	}
 	
+	//ENDPOINT DELETE
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable String id){ //para dizer que esse id precisa ser igual o id recebido na url
+	
+		service.delete(id);
+	
+		return ResponseEntity.noContent().build(); //se retornar vazio apresenta um ERROR 404
+	}
+	
+	//ENDPOINT POST
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){ //para dizer que esse id precisa ser igual o id recebido na url
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){ //requisitando um body json para usar o metodo POST no mongo
 	
 		User obj = service.fromDTO(objDto);
 		obj = service.insert(obj); //inserir no DB
