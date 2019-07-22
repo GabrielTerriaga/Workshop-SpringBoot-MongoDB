@@ -15,7 +15,7 @@ public class Instantiation implements CommandLineRunner {
 	@Autowired //instanciar obOjeto, injecao de dependencia auto do Spring
 	private UserRepository userRepository;
 	
-	@Override
+	@Override //esse metodo esta excluindo tudo e instanciando esses objs, por isso o metodo POST no servico nao esta salvando apos o Relaunch da app
 	public void run(String... args) throws Exception {
 
 		userRepository.deleteAll();

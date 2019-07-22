@@ -61,4 +61,15 @@ public class UserResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri(); //serve para retornar um cabecalho com o id
 		return ResponseEntity.created(uri).build();
 	}
+	
+	//ENDPOINT PUT
+		@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+		public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ //Requisitando o body da classe DTO que esta fazendo toda o tipo de transferencia para o DB, um parametro do tipo Id
+		
+			User obj = service.fromDTO(objDto);
+			obj.setId(id);//id vindo por parametro atraves do endopoint do Spring
+			obj = service.update(obj); //inserir no DB
+		
+			return ResponseEntity.noContent().build(); //se retornar vazio apresenta um ERROR 404
+		}
 }
