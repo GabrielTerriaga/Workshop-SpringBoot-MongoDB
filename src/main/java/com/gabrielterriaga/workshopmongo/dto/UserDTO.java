@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.gabrielterriaga.workshopmongo.domain.User;
 
+//DTO = Obj que facilita na hora de fazer alguma transferencia com o DB
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
