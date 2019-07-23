@@ -1,5 +1,6 @@
 package com.gabrielterriaga.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,18 @@ public class PostResource {
 	
 		text = URL.decodeParam(text); //decodificar o string da url
 		List<Post> list = service.findByTitle(text);
+	
+		return ResponseEntity.ok().body(list); //obj para comunicar com banco atraves do padrao DTO
+	}
+	
+	//ENDPOINT FULL SEARCH
+	@RequestMapping(value = "/fullsearch", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> fullSearch(@RequestParam(value = "text", defaultValue = "") String text, @RequestParam(value = "minDate", defaultValue = "") String minDate, @RequestParam(value = "maxDate", defaultValue = "") String maxDate){
+	
+		text = URL.decodeParam(text); //decodificar o string da url
+		Date min = URL.convertDate(minDate, new Date(0L)); //new Date(0L) para passar uma data minima do Java
+		Date max = URL.convertDate(maxDate, new Date()); //data atual do sistema do usuario
+		List<Post> list = service.fullSearch(text, min, max);
 	
 		return ResponseEntity.ok().body(list); //obj para comunicar com banco atraves do padrao DTO
 	}

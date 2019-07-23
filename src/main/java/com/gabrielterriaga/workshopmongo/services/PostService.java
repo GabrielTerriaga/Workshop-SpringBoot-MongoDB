@@ -1,5 +1,6 @@
 package com.gabrielterriaga.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,5 +27,10 @@ public class PostService {
 	
 	public List<Post> findByTitle(String text){
 		return repo.searchTitle(text);
+	}
+	
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate){
+		maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000); //Macete para comparar a hora, precisa adicionar mais um dia em milesegundos para fazer a comparacao de menor ou igual a meia noite do proximo dia
+		return repo.fullSearch(text, minDate, maxDate);
 	}
 }
